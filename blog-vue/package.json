@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.14",
+    "axios": "^1.7.3",
     "vue": "^3.4.29",
     "vue-router": "^4.4.3"
   },
