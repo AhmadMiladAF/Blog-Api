@@ -17,10 +17,16 @@
 <script>
 import { onMounted } from 'vue'
 import usePosts from "@/api/usePosts.js";
+import { useStore } from "vuex";
+
 export default {
   setup(){
 
     const { posts, fetchPosts } = usePosts()
+
+    const store = useStore()
+
+    console.log(store.getters.user)
 
     onMounted(fetchPosts) /*todo: Без параметра можно и так писать */
 
