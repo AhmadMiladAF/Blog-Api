@@ -10,6 +10,6 @@ class PostIndexController extends Controller
 {
     public function __invoke()
     {   /* todo: where и добавляем поле которое хотим проверить пример: wherePublished*/
-        return PostResource::collection(Post::wherePublished(true)->get());
+        return PostResource::collection(Post::latest()->wherePublished(true)->get());
     }
 }
