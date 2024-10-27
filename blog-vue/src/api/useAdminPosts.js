@@ -11,9 +11,16 @@ export default function useAdminPosts()
 
         posts.value = response.data.data // пишем data 2 раза потому что 1 это сам массив, а 2 это внутри массива ещё массив данных
     }
+    //TODO Функция для  создания поста
+    const createPost = async () => {
+        let response = await axios.post('/api/admin/posts')
+
+        return response.data.data
+    }
 
     return {
         posts,
-        fetchPosts
+        fetchPosts,
+        createPost
     }
 }
