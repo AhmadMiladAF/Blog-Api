@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from "@/store";
 
 import Home from "@/pages/Home.vue";
 import Post from "@/pages/Post.vue";
@@ -19,7 +20,14 @@ const routes = [
     {
         path: '/admin/posts',
         name: 'admin.posts',
-        component: Posts
+        component: Posts,
+        //TODO Делаем Middleware если пользователь не авторизован, то перенаправляем на страницу логина
+        beforeEnter: (to, from, next) => {
+            if (!store.getters.authenticated) {
+                return next({name: 'admin.login'})
+            }
+              return next()
+        }
     },
     {
         path:  '/posts/:slug',

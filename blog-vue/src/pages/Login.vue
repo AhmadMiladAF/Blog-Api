@@ -36,11 +36,13 @@
 <script>
 import { useStore } from "vuex";
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup()
   {
     const store = useStore();
+    const router = useRouter();
 
 /*todo: Данные для валидации формы*/
 
@@ -55,7 +57,10 @@ export default {
 
     const attemptLogin = () => {
       /*todo: вызываем нашу функцию из store*/
-      store.dispatch('login', form). catch((e) => {
+      store.dispatch('login', form).then(() => {
+           //TODO Делаем редирект на страницу после успешного логина
+         router.replace({name: 'admin.posts'})
+      }).catch((e) => {
         if(e.response.status === 422){ //Если статус 422
           errors.value = e.response.data.errors;
         }
