@@ -22,6 +22,7 @@ const routes = [
         path: '/admin/posts/:slug/edit',
         name: 'admin.posts.edit',
         component: Edit,
+        props: true,
         //TODO Делаем Middleware если пользователь не авторизован, то перенаправляем на страницу логина
         beforeEnter: (to, from, next) => {
             if (!store.getters.authenticated) {

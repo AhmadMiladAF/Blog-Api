@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\PostIndexController as AdminPostIndexController;
 use App\Http\Controllers\Admin\PostStoreController as AdminPostStoreController;
+use App\Http\Controllers\Admin\PostEditController as AdminPostEditController;
 use App\Http\Controllers\PostIndexController;
 use App\Http\Controllers\PostShowController;
 use Illuminate\Http\Request;
@@ -27,3 +28,4 @@ Route::get('/posts/{post:slug}', PostShowController::class); //{post} означ
 Route::get('/admin/posts', AdminPostIndexController::class);
 
 Route::post('/admin/posts', AdminPostStoreController::class);
+Route::get('/admin/posts/{post:slug}/edit', AdminPostEditController::class);
