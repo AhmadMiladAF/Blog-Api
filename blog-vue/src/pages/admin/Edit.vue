@@ -10,10 +10,10 @@ import _ from 'lodash';
       }
     },
     setup(props) {
-      const { post, fetchPost } = useAdminPosts()
+      const { post, fetchPost, patchPost } = useAdminPosts()
 
-      const updatePost = () => {
-        console.log('update post')
+      const updatePost = async() => {
+        await patchPost(props.slug)
       }
 
       onMounted(async () => {

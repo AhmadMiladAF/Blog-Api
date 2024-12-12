@@ -26,9 +26,16 @@ export default function useAdminPosts()
         post.value = response.data.data // пишем data 2 раза потому что 1 это сам массив, а 2 это внутри массива ещё массив данных
     }
 
+    //TODO Функция для обновления поста
+    const patchPost = async (uuid) => {
+        let response = await axios.patch(`/api/admin/posts/${uuid}`, post.value)
+    }
+
+
     return {
         posts,
         post,
+        patchPost,
         fetchPosts,
         createPost,
         fetchPost
