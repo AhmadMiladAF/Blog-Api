@@ -18,7 +18,7 @@
             </p>
 
             <div>
-              <router-link to="/" class="text-sm font-medium">Edit</router-link>
+              <router-link :to="{ name: 'admin.posts.edit', params: { slug: post.slug } }" class="text-sm font-medium">Edit</router-link>
             </div>
 
             <div>
