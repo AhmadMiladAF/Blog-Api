@@ -37,12 +37,31 @@ import ResizeTextArea from "@/components/ResizeTextArea.vue";
 
 <template>
   <div>
+    <div class="absolute w-full left-0 top-0 flex justify-between items-center space-x-6">
+      <div class="flex-grow flex items-center">
+        <span>/</span> <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug">
+      </div>
+      <div class="flex items-center space-x-6">
+        <div>
+          <span class="text-sm text-gray-500">Autosaved</span>
+        </div>
+        <div>
+          <button class="text-sm font-medium">
+              Published
+          </button>
+        </div>
+        <router-link :to="{ name: 'post', params: { slug: post.slug }}" class="text-sm font-medium text-gray-800">Preview</router-link>
+      </div>
+    </div>
+    <div>
   <ResizeTextArea v-if="post.title">
     <template v-slot:default="{ resize, el }"> <!--- TODO: Используем слот resize в наш textarea  и передаём @ событие input в ResizeTextArea и там принимаем событие как параметр e-->
       <!--- TODO: В данном случае, el является реактивной переменной, которая будет содержать ссылку на элемент textarea. --->
       <textarea :ref="el" v-model="post.title" @input="resize" class="w-full text-center text-4xl lg:text-6xl leading-10 font-extrabold tracking-tight text-gray-900 border-none focus:ring-0 resize-none"></textarea>
     </template>
   </ResizeTextArea>
+  </div>
+
   </div>
 </template>
 
