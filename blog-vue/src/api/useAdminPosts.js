@@ -12,6 +12,14 @@ export default function useAdminPosts()
 
         posts.value = response.data.data // пишем data 2 раза потому что 1 это сам массив, а 2 это внутри массива ещё массив данных
     }
+
+    //TODO Функция для  изменения поста
+    const fetchPost = async (uuid) => {
+        let response = await axios.get(`/api/admin/posts/${uuid}/edit`)
+
+        post.value = response.data.data // пишем data 2 раза потому что 1 это сам массив, а 2 это внутри массива ещё массив данных
+    }
+
     //TODO Функция для  создания поста
     const createPost = async () => {
         let response = await axios.post('/api/admin/posts')
@@ -19,12 +27,7 @@ export default function useAdminPosts()
         return response.data.data
     }
 
-    //TODO Функция для  изменения поста
-    const fetchPost = async (slug) => {
-        let response = await axios.get(`/api/admin/posts/${slug}/edit`)
 
-        post.value = response.data.data // пишем data 2 раза потому что 1 это сам массив, а 2 это внутри массива ещё массив данных
-    }
 
     //TODO Функция для обновления поста
     const patchPost = async (uuid) => {
@@ -35,9 +38,9 @@ export default function useAdminPosts()
     return {
         posts,
         post,
-        patchPost,
         fetchPosts,
+        fetchPost,
         createPost,
-        fetchPost
+        patchPost
     }
 }

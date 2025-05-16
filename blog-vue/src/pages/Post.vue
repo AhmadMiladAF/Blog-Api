@@ -1,4 +1,4 @@
-<template>
+ <template>
 
   <h1 class="block text-center text-4xl sm:text-6xl leading-10 font-extrabold tracking-tight text-gray-900">
         {{ post.title }}

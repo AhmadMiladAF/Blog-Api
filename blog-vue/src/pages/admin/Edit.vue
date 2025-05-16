@@ -1,12 +1,12 @@
 <script>
 import useAdminPosts from "@/api/useAdminPosts.js";
-import { onMounted, watch } from "vue";
+import { onMounted, watch, watchEffect} from "vue";
 import _ from 'lodash';
 import ResizeTextArea from "@/components/ResizeTextArea.vue";
   export default {
     components: {ResizeTextArea},
     props: {
-      slug: {
+      uuid: {
         required: true,
         type: String
       }
@@ -15,11 +15,21 @@ import ResizeTextArea from "@/components/ResizeTextArea.vue";
       const { post, fetchPost, patchPost } = useAdminPosts()
 
       const updatePost = async() => {
-        await patchPost(props.slug)
+        await patchPost(props.uuid)
+      }
+
+      const replace = () => {
+        const slug = post.value.slug
+
+      post.value.slug = 'abc'
       }
 
       onMounted(async () => {
-              await fetchPost(props.slug)
+              await fetchPost(props.uuid)
+
+        watchEffect(()=> {
+          replace()
+        })
           //TODO: Проверка на изменение title через свойство cloneDeep из lodash и watch
           //TODO: и посредством debounce из lodash мы делаем запрос только после 500 милисекунд после последнего изменения чтобы нне было много запрос
             watch(() => _.cloneDeep(post), _.debounce(() => {
@@ -39,7 +49,7 @@ import ResizeTextArea from "@/components/ResizeTextArea.vue";
   <div>
     <div class="absolute w-full left-0 top-0 flex justify-between items-center space-x-6">
       <div class="flex-grow flex items-center">
-        <span>/</span> <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug">
+        <span class="mr-1">/</span> <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug">
       </div>
       <div class="flex items-center space-x-6">
         <div>
@@ -49,8 +59,13 @@ import ResizeTextArea from "@/components/ResizeTextArea.vue";
           <button class="text-sm font-medium">
               Published
           </button>
+          <router-link
+            v-if="post.slug"
+            :to="{ name: 'post', params: { slug: post.slug } }"
+            class="text-sm font-medium text-gray-800"
+          >Preview</router-link>
+          <span v-else class="text-sm text-gray-400">Preview</span>
         </div>
-        <router-link :to="{ name: 'post', params: { slug: post.slug }}" class="text-sm font-medium text-gray-800">Preview</router-link>
       </div>
     </div>
     <div>
