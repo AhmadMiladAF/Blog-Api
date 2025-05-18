@@ -3,6 +3,7 @@ import useAdminPosts from "@/api/useAdminPosts.js";
 import { onMounted, watch, watchEffect} from "vue";
 import _ from 'lodash';
 import ResizeTextArea from "@/components/ResizeTextArea.vue";
+import slugify from "slugify";
   export default {
     components: {ResizeTextArea},
     props: {
@@ -18,17 +19,21 @@ import ResizeTextArea from "@/components/ResizeTextArea.vue";
         await patchPost(props.uuid)
       }
 
-      const replace = () => {
+      const replaceSlug = () => {
         const slug = post.value.slug
+        //TODO: Проверка на наличие пробелов в slug если она есть то заменим на -
+        if(slug.charAt(slug.length - 1) === ' ') {
+          return
+        }
 
-      post.value.slug = 'abc'
+        post.value.slug = slug ? slugify(slug, {strict: true}) : post.value.uuid
       }
 
       onMounted(async () => {
               await fetchPost(props.uuid)
 
         watchEffect(()=> {
-          replace()
+          replaceSlug()
         })
           //TODO: Проверка на изменение title через свойство cloneDeep из lodash и watch
           //TODO: и посредством debounce из lodash мы делаем запрос только после 500 милисекунд после последнего изменения чтобы нне было много запрос
@@ -49,7 +54,8 @@ import ResizeTextArea from "@/components/ResizeTextArea.vue";
   <div>
     <div class="absolute w-full left-0 top-0 flex justify-between items-center space-x-6">
       <div class="flex-grow flex items-center">
-        <span class="mr-1">/</span> <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug">
+        <!---- TODO: при клике на поле будет автоматически выделяться весь текст  ------>
+        <span class="mr-1">/</span> <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug" spellcheck="false" v-on:click="$event.target.select()">
       </div>
       <div class="flex items-center space-x-6">
         <div>
