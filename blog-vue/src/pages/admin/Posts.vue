@@ -48,7 +48,7 @@ export default {
     const newPost = async () => {
       let post = await createPost()
 
-      router.replace({name: 'admin.posts.edit', params: { uuid: post.uuid }})
+      router.push({name: 'admin.posts.edit', params: { uuid: post.uuid }})
     }
 
     onMounted(fetchPosts)
