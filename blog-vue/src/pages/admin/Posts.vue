@@ -47,7 +47,7 @@ export default {
 
     const newPost = async () => {
       let post = await createPost()
-
+      // Добавляем router.push чтобы сохранял историю переходов
       router.push({name: 'admin.posts.edit', params: { uuid: post.uuid }})
     }
 

@@ -3,9 +3,10 @@ import useAdminPosts from "@/api/useAdminPosts.js";
 import { onMounted, watch, watchEffect} from "vue";
 import _ from 'lodash';
 import ResizeTextArea from "@/components/ResizeTextArea.vue";
+import Editor from "@/components/Editor.vue";
 import slugify from "slugify";
   export default {
-    components: {ResizeTextArea},
+    components: {ResizeTextArea, Editor},
     props: {
       uuid: {
         required: true,
@@ -82,7 +83,12 @@ import slugify from "slugify";
     </template>
   </ResizeTextArea>
   </div>
-
+    <!--
+  Компонент Editor:
+  - v-model="post.body": двусторонняя привязка содержимого редактора к полю body объекта post
+  - class="mt-16": добавляет верхний отступ для визуального разделения редактора от других элементов
+    -->
+  <Editor v-model="post.body" class="mt-16"/>
   </div>
 </template>
 
