@@ -88,7 +88,8 @@ import slugify from "slugify";
   - v-model="post.body": двусторонняя привязка содержимого редактора к полю body объекта post
   - class="mt-16": добавляет верхний отступ для визуального разделения редактора от других элементов
     -->
-  <Editor v-model="post.body" class="mt-16"/>
+    <!--- Использование нескольких моделей Vue --->
+  <Editor v-model:modelValue="post.body" v-model:teaserValue="post.teaser" class="mt-16"/>
   </div>
 </template>
 
