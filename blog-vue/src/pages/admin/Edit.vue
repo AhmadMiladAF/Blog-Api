@@ -2,9 +2,13 @@
 import useAdminPosts from "@/api/useAdminPosts.js";
 import { onMounted, watch, watchEffect} from "vue";
 import _ from 'lodash';
+import { ref } from "vue";
 import ResizeTextArea from "@/components/ResizeTextArea.vue";
 import Editor from "@/components/Editor.vue";
 import slugify from "slugify";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime) // Äктивация плагина relativeTime для dayjs, чтобы показать время в относительном формате, например "5 минут назад"
   export default {
     components: {ResizeTextArea, Editor},
     props: {
@@ -16,8 +20,12 @@ import slugify from "slugify";
     setup(props) {
       const { post, fetchPost, patchPost } = useAdminPosts()
 
+      const lastSaved = ref(dayjs())
+
       const updatePost = async() => {
         await patchPost(props.uuid)
+
+        lastSaved.value = dayjs()
       }
 
       const replaceSlug = () => {
@@ -45,7 +53,8 @@ import slugify from "slugify";
 
       return {
         post,
-        fetchPost
+        fetchPost,
+        lastSaved
       }
     },
   }
@@ -60,7 +69,7 @@ import slugify from "slugify";
       </div>
       <div class="flex items-center space-x-6">
         <div>
-          <span class="text-sm text-gray-500">Autosaved</span>
+          <span class="text-sm text-gray-500">{{lastSaved.fromNow() }}</span>
         </div>
         <div>
           <button v-on:click="post.published = !post.published" class="text-sm font-medium" v-bind:class="{'text-pink-500': post.published }">

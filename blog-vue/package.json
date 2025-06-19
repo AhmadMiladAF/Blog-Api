@@ -13,6 +13,7 @@
     "@tiptap/starter-kit": "^2.14.0",
     "@tiptap/vue-3": "^2.14.0",
     "axios": "^1.7.3",
+    "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "slugify": "^1.6.6",
     "vue": "^3.4.29",
