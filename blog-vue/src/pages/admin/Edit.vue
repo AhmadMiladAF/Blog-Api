@@ -1,16 +1,15 @@
 <script>
 import useAdminPosts from "@/api/useAdminPosts.js";
-import { onMounted, watch, watchEffect} from "vue";
+import { ref, onMounted, watch, watchEffect } from "vue";
 import _ from 'lodash';
-import { ref } from "vue";
 import ResizeTextArea from "@/components/ResizeTextArea.vue";
 import Editor from "@/components/Editor.vue";
 import slugify from "slugify";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime) // Äктивация плагина relativeTime для dayjs, чтобы показать время в относительном формате, например "5 минут назад"
+import RelativeTime from "@/components/RelativeTime.vue";
+
   export default {
-    components: {ResizeTextArea, Editor},
+    components: {RelativeTime, ResizeTextArea, Editor},
     props: {
       uuid: {
         required: true,
@@ -20,7 +19,12 @@ dayjs.extend(relativeTime) // Äктивация плагина relativeTime д�
     setup(props) {
       const { post, fetchPost, patchPost } = useAdminPosts()
 
-      const lastSaved = ref(dayjs())
+      const lastSaved = ref(null)
+
+      onMounted(async () => {
+        await fetchPost(props.uuid)
+        lastSaved.value = post.value.updated_at ? dayjs(post.value.updated_at) : null
+      })
 
       const updatePost = async() => {
         await patchPost(props.uuid)
@@ -68,9 +72,11 @@ dayjs.extend(relativeTime) // Äктивация плагина relativeTime д�
         <span class="mr-1">/</span> <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug" spellcheck="false" v-on:click="$event.target.select()">
       </div>
       <div class="flex items-center space-x-6">
-        <div>
-          <span class="text-sm text-gray-500">{{lastSaved.fromNow() }}</span>
-        </div>
+        <RelativeTime :date="lastSaved" v-if="lastSaved">
+          <template v-slot:default="{ fromNow }">
+          <span class="text-sm text-gray-500">{{ fromNow }}</span>
+          </template>
+        </RelativeTime>
         <div>
           <button v-on:click="post.published = !post.published" class="text-sm font-medium" v-bind:class="{'text-pink-500': post.published }">
               {{ !post.published ? 'Published' : 'Unpublished' }}
