@@ -23,7 +23,7 @@
 
             <div>
 
-              <button class="text-sm font-medium">Delete</button>
+              <button v-on:click="deletePost(post.uuid)" class="text-sm font-medium">Delete</button>
 
             </div>
 
@@ -42,8 +42,20 @@ import { useRouter } from "vue-router";
 export default {
 
   setup(){
-    const { posts, fetchPosts, createPost } = useAdminPosts()
+    const { posts, fetchPosts, createPost, destroyPost } = useAdminPosts()
     const router = useRouter()
+
+    const deletePost = async (uuid) =>
+    {
+      if(!window.confirm('are you sure ?')) {
+        // Если пользователь отменил удаление, просто выходим из функции
+          return
+      }
+      // Вызываем destroyPost для удаления поста на сервере
+      await destroyPost(uuid)
+      // Удаляем пост из локального состояния массива после успешного удаления на сервере
+      posts.value = posts.value.filter(p => p.uuid !== uuid)
+    }
 
     const newPost = async () => {
       let post = await createPost()
@@ -57,7 +69,8 @@ export default {
     return {
       //Хуки
       posts,
-      newPost
+      newPost,
+      deletePost
     }
   },
 }

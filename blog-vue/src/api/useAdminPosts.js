@@ -20,6 +20,10 @@ export default function useAdminPosts()
         post.value = response.data.data // пишем data 2 раза потому что 1 это сам массив, а 2 это внутри массива ещё массив данных
     }
 
+    const destroyPost = async (uuid) => {
+        await axios.delete(`/api/admin/posts/${uuid}`)
+    }
+
     //TODO Функция для  создания поста
     const createPost = async () => {
         let response = await axios.post('/api/admin/posts')
@@ -41,6 +45,7 @@ export default function useAdminPosts()
         fetchPosts,
         fetchPost,
         createPost,
-        patchPost
+        patchPost,
+        destroyPost
     }
 }
