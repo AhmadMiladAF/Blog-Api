@@ -10,6 +10,8 @@ class PostShowController extends Controller
 {
     public function __invoke(Post $post): PostResource
     {
+
+        $this->authorize('show', $post); // Проверка авторизации где мы добавили в PostPolicy метод show
         //Авторизация
 
         return new PostResource($post);
